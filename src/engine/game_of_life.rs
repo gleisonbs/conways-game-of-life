@@ -3,36 +3,46 @@ use core::time;
 use std::i32;
 use std::thread;
 
-const BOARD_ROWS: usize = 30;
-const BOARD_COLS: usize = 50;
-
 pub struct GameOfLife {
-    grid: [[bool; BOARD_COLS]; BOARD_ROWS],
+    rows: usize,
+    cols: usize,
+    grid: Vec<Vec<bool>>,
 }
 
 impl GameOfLife {
-    pub fn new(pattern: Vec<Vec<bool>>) -> GameOfLife {
-        let mut game_of_life = GameOfLife {
-            grid: [[false; BOARD_COLS]; BOARD_ROWS],
-        };
+    pub fn new(rows: usize, cols: usize, pattern: Vec<Vec<bool>>) -> GameOfLife {
+        let mut grid = Vec::new();
 
         for (row_index, row) in pattern.iter().enumerate() {
+            let mut vec_row = Vec::new();
             for (col_index, _) in row.iter().enumerate() {
-                game_of_life.grid[row_index][col_index] = pattern[row_index][col_index];
+                vec_row.push(pattern[row_index][col_index])
+            }
+            grid.push(vec_row);
+        }
+
+        for (_, row) in grid.iter_mut().enumerate() {
+            while row.len() < cols {
+                row.push(false);
             }
         }
 
-        game_of_life
+        while grid.len() < rows {
+            let row = vec![false; cols];
+            grid.push(row)
+        }
+
+        GameOfLife { cols, grid, rows }
     }
 
     pub fn draw_board(&self) {
         thread::sleep(time::Duration::from_millis(1000));
         println!();
         clearscreen::clear().unwrap();
-        for i in 0..BOARD_ROWS {
-            for j in 0..BOARD_COLS {
+        for i in 0..self.rows {
+            for j in 0..self.cols {
                 print!("|{}", if self.grid[i][j] { "." } else { " " });
-                if j == BOARD_COLS - 1 {
+                if j == self.cols - 1 {
                     print!("|")
                 }
             }
@@ -47,16 +57,16 @@ impl GameOfLife {
             if col > 0 {
                 count_neighbors += self.grid[row - 1][col - 1] as i32;
             }
-            if col < BOARD_COLS - 1 {
+            if col < self.cols - 1 {
                 count_neighbors += self.grid[row - 1][col + 1] as i32;
             }
         }
-        if row < BOARD_ROWS - 1 {
+        if row < self.rows - 1 {
             count_neighbors += self.grid[row + 1][col] as i32;
             if col > 0 {
                 count_neighbors += self.grid[row + 1][col - 1] as i32;
             }
-            if col < BOARD_COLS - 1 {
+            if col < self.cols - 1 {
                 count_neighbors += self.grid[row + 1][col + 1] as i32;
             }
         }
@@ -64,7 +74,7 @@ impl GameOfLife {
         if col > 0 {
             count_neighbors += self.grid[row][col - 1] as i32;
         }
-        if col < BOARD_COLS - 1 {
+        if col < self.cols - 1 {
             count_neighbors += self.grid[row][col + 1] as i32;
         }
 
@@ -76,21 +86,20 @@ impl GameOfLife {
     }
 
     pub fn next_generation(&mut self) {
-        let mut temp_board = GameOfLife {
-            grid: [[false; BOARD_COLS]; BOARD_ROWS],
-        };
-
-        for row in 0..BOARD_ROWS {
-            for col in 0..BOARD_COLS {
+        let mut temp_board = Vec::new();
+        for row in 0..self.rows {
+            let mut temp_row = Vec::new();
+            for col in 0..self.cols {
                 let neighbors = self.get_neighbors(row, col);
                 let is_alive = self.grid[row][col];
-                temp_board.grid[row][col] = self.is_cell_alive(neighbors, is_alive)
+                temp_row.push(self.is_cell_alive(neighbors, is_alive));
             }
+            temp_board.push(temp_row)
         }
 
-        for row in 0..BOARD_ROWS {
-            for col in 0..BOARD_COLS {
-                self.grid[row][col] = temp_board.grid[row][col];
+        for row in 0..self.rows {
+            for col in 0..self.cols {
+                self.grid[row][col] = temp_board[row][col];
             }
         }
     }
