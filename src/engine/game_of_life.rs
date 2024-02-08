@@ -33,7 +33,7 @@ impl GameOfLife {
         GameOfLife { cols, grid, rows }
     }
 
-    pub fn draw_board(&self) {
+    fn _draw_board(&self) {
         clearscreen::clear().unwrap();
         for i in 0..self.rows {
             for j in 0..self.cols {
@@ -93,7 +93,7 @@ impl GameOfLife {
             temp_board.push(temp_row)
         }
 
-        for row in 0..self.rows {
+        for (row, _) in temp_board.iter().enumerate() {
             for col in 0..self.cols {
                 self.grid[row][col] = temp_board[row][col];
             }
