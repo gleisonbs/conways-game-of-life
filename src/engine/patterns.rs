@@ -1,15 +1,18 @@
 pub struct Pattern {}
 
 impl Pattern {
-    pub fn _blinker() -> Vec<Vec<bool>> {
-        let pattern = vec![".....", "..O..", "..O..", "..O..", "....."];
-
+    pub fn none() -> Vec<Vec<bool>> {
+        let pattern = vec!["."];
         self::Pattern::translate_pattern(pattern)
     }
 
-    pub fn glider() -> Vec<Vec<bool>> {
-        let pattern = vec!["..O..", "...O.", ".OOO.."];
+    pub fn _blinker() -> Vec<Vec<bool>> {
+        let pattern = vec![".....", "..O..", "..O..", "..O..", "....."];
+        self::Pattern::translate_pattern(pattern)
+    }
 
+    pub fn _glider() -> Vec<Vec<bool>> {
+        let pattern = vec!["..O..", "...O.", ".OOO.."];
         self::Pattern::translate_pattern(pattern)
     }
 
@@ -40,7 +43,6 @@ impl Pattern {
             ".................O.O.................",
             "...............OO...OO................",
         ];
-
         self::Pattern::translate_pattern(pattern)
     }
 

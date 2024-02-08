@@ -6,7 +6,7 @@ use std::thread;
 pub struct GameOfLife {
     rows: usize,
     cols: usize,
-    grid: Vec<Vec<bool>>,
+    pub grid: Vec<Vec<bool>>,
 }
 
 impl GameOfLife {
