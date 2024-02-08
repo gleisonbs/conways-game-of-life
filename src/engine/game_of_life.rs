@@ -1,7 +1,5 @@
 use clearscreen;
-use core::time;
 use std::i32;
-use std::thread;
 
 pub struct GameOfLife {
     rows: usize,
@@ -36,8 +34,6 @@ impl GameOfLife {
     }
 
     pub fn draw_board(&self) {
-        thread::sleep(time::Duration::from_millis(1000));
-        println!();
         clearscreen::clear().unwrap();
         for i in 0..self.rows {
             for j in 0..self.cols {

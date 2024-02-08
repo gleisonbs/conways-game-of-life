@@ -1,6 +1,7 @@
 mod engine;
 
 use std::io::{stdout, Write};
+use std::time::Instant;
 
 use nannou::prelude::*;
 
@@ -20,7 +21,7 @@ struct Model {
 }
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(model).run();
 }
 
 fn model(app: &App) -> Model {
@@ -37,6 +38,8 @@ fn model(app: &App) -> Model {
         game_of_life: GameOfLife::new(ROWS as usize, COLS as usize, Pattern::none()),
     }
 }
+
+fn draw_ui_grid() {}
 
 fn translate_click(model: &Model) -> Point2 {
     let min_x = WIDTH as f32 / 2.0 - WIDTH as f32;
@@ -74,8 +77,6 @@ fn event(_app: &App, model: &mut Model, event: WindowEvent) {
         _other => {}
     }
 }
-
-fn update(_app: &App, _model: &mut Model, _update: Update) {}
 
 fn view(_app: &App, model: &Model, _frame: Frame) {
     model.game_of_life.draw_board();
