@@ -46,6 +46,23 @@ impl Pattern {
         self::Pattern::translate_pattern(pattern)
     }
 
+    pub fn _gosper_glider_gun() -> Vec<Vec<bool>> {
+        let pattern = vec![
+            ".........................",
+            ".........................",
+            "........................O",
+            "......................O.O",
+            "............OO......OO............OO",
+            "...........O...O....OO............OO",
+            "OO........O.....O...OO",
+            "OO........O...O.OO....O.O",
+            "..........O.....O.......O",
+            "...........O...O",
+            "............OO",
+        ];
+        self::Pattern::translate_pattern(pattern)
+    }
+
     fn translate_pattern(pattern: Vec<&str>) -> Vec<Vec<bool>> {
         let mut matrix: Vec<Vec<bool>> = Vec::new();
         for row in pattern {
